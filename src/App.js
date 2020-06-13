@@ -3,7 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react';
 import {defaults} from './defaultValues';
-import {nextYear} from './game';
+import {nextYear, reset, save} from './game';
+
+const electron = window.require('electron');
+const {ipcRenderer} = electron;
+
+let handleReset;
 
 function App() {
     const [values, setValues] = useState(localStorage.hasOwnProperty('values') ? JSON.parse(localStorage.getItem('values')) : defaults);
@@ -12,18 +17,17 @@ function App() {
         setValues(nextYear(values));
     }
 
-    let handleReset = () => {
-        setValues(defaults);
-        save();
-    }
-
-    let save = () => {
-        localStorage.setItem('values', JSON.stringify(values));
+    handleReset = () => {
+        reset(setValues)
     }
 
     useEffect(() => {
-        save();
+        save(values);
     }, [values]);
+
+    ipcRenderer.on('reset', (e, args) => {
+        handleReset();
+    })
 
     return (
         <div className="App">

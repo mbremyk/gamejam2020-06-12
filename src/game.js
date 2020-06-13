@@ -1,5 +1,6 @@
-function nextYear(values)
-{
+const {defaults} = require('./defaultValues');
+
+function nextYear(values) {
     let vals = {...values};
 
     vals.gold += vals.population * vals.tax / 100;
@@ -8,4 +9,13 @@ function nextYear(values)
     return vals;
 }
 
-module.exports = {nextYear};
+function reset(setValues) {
+    setValues(defaults);
+    save(defaults);
+}
+
+let save = (values) => {
+    localStorage.setItem('values', JSON.stringify(values));
+}
+
+module.exports = {nextYear, save, reset};

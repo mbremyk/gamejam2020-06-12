@@ -1,10 +1,13 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu, ipcRenderer, ipcMain} = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const {reset} = require('../src/game');
+
+let mainWindow;
 
 function createWindow () {
     // Create the browser window.
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -13,10 +16,13 @@ function createWindow () {
     })
 
     // and load the index.html of the app.
-    win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+    mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
+
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    Menu.setApplicationMenu(mainMenu);
 
     // Open the DevTools.
-    win.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -43,3 +49,24 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const mainMenuTemplate = [
+    {
+        label:'File',
+        submenu:[
+            {
+                label: 'Reset',
+                click() {
+                    console.log(1)
+                    mainWindow.webContents.send('reset', 1)
+                }
+            },
+            {
+                label: 'Quit',
+                click(){
+                    app.quit()
+                }
+            }
+        ]
+    }
+]
