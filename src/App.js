@@ -12,8 +12,17 @@ function App() {
         setValues(nextYear(values));
     }
 
-    useEffect(() => {
+    let handleReset = () => {
+        setValues(defaults);
+        save();
+    }
+
+    let save = () => {
         localStorage.setItem('values', JSON.stringify(values));
+    }
+
+    useEffect(() => {
+        save();
     }, [values]);
 
     return (
@@ -21,6 +30,7 @@ function App() {
             <div>Population: {Math.round(values.population)}</div>
             <div>Gold: {Math.round(values.gold)}</div>
             <button onClick={handleNextYear}>Next year</button>
+            <button onClick={handleReset}>Reset</button>
         </div>
     );
 }
