@@ -57,6 +57,7 @@ const mainMenuTemplate = [
             {
                 label: 'Reset',
                 click() {
+                    //#TODO Fix reset button needing to be pressed twice to reset. Only relevant for menu button
                     mainWindow.webContents.send('reset')
                 }
             },
