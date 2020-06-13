@@ -4,75 +4,86 @@ import './App.css';
 import {useState} from 'react';
 import {defaults} from './defaultValues';
 import {nextYear} from './game';
+import {cloneDeep} from 'lodash';
 
 
-class Square extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: null,
-        };
-    }
+let Square = (props) => {
+    const [state, setState] = useState({value: props.value});
 
-    render() {
-        return(
-            <button
-                className="square"
-                onClick={() => this.setState({value: 'X'})}
-            >
-                {this.state.value}
-            </button>
-        );
-    }
+    const [squareId, updateSingleState] = [props.squareId, props.updateSingleState]
+
+    return (
+        <button
+            className="square"
+            onClick={() => {
+                updateSingleState(squareId, 'X');
+                setState({...state, value: 'X'})
+            }}
+        >
+            {state.value}
+        </button>
+    );
 }
 
-class Board extends React.Component {
-    renderSquare(i){
-        return <Square />;
+const Board = (props) => {
+    let renderSquare = (i, value) => {
+        return <Square squareId={i} updateSingleState={updateSingleState} value={value}/>;
     }
 
-    render() {
-        return(
+    let updateSingleState = (id, value) => {
+        let arr = cloneDeep(props.values.boardState);
+        console.log(arr)
+        arr[Math.floor(id/10)][id%10] = value;
+        props.setValues({...props.values, boardState:arr})
+    }
+
+    console.log(props.values);
+
+    return (
         <div>
-            <div className="board-row">
-                {this.renderSquare(0)}
-                {this.renderSquare(1)}
-                {this.renderSquare(2)}
-                {this.renderSquare(3)}
-                {this.renderSquare(4)}
-                {this.renderSquare(5)}
-                {this.renderSquare(6)}
-                {this.renderSquare(7)}
-                {this.renderSquare(8)}
-                {this.renderSquare(9)}
-            </div>
-            <div className="board-row">
-                {this.renderSquare(10)}
-                {this.renderSquare(11)}
-                {this.renderSquare(12)}
-                {this.renderSquare(13)}
-                {this.renderSquare(14)}
-                {this.renderSquare(15)}
-                {this.renderSquare(16)}
-                {this.renderSquare(17)}
-                {this.renderSquare(18)}
-                {this.renderSquare(19)}
-            </div>
-            <div className="board-row">
-                {this.renderSquare(20)}
-                {this.renderSquare(21)}
-                {this.renderSquare(22)}
-                {this.renderSquare(23)}
-                {this.renderSquare(24)}
-                {this.renderSquare(25)}
-                {this.renderSquare(26)}
-                {this.renderSquare(27)}
-                {this.renderSquare(28)}
-                {this.renderSquare(29)}
-            </div>
-        </div>);
+            {props.values.boardState.map((row, rowIndex) => {
+                return (<div className={'board-row'}>
+                    {row.map((bit, colIndex) => renderSquare(rowIndex * 10 + colIndex, bit))}
+                </div>)
+            })}
 
-    }
+            {/*<div className="board-row">
+                {renderSquare(0)}
+                {renderSquare(1)}
+                {renderSquare(2)}
+                {renderSquare(3)}
+                {renderSquare(4)}
+                {renderSquare(5)}
+                {renderSquare(6)}
+                {renderSquare(7)}
+                {renderSquare(8)}
+                {renderSquare(9)}
+            </div>
+            <div className="board-row">
+                {renderSquare(10)}
+                {renderSquare(11)}
+                {renderSquare(12)}
+                {renderSquare(13)}
+                {renderSquare(14)}
+                {renderSquare(15)}
+                {renderSquare(16)}
+                {renderSquare(17)}
+                {renderSquare(18)}
+                {renderSquare(19)}
+            </div>
+            <div className="board-row">
+                {renderSquare(20)}
+                {renderSquare(21)}
+                {renderSquare(22)}
+                {renderSquare(23)}
+                {renderSquare(24)}
+                {renderSquare(25)}
+                {renderSquare(26)}
+                {renderSquare(27)}
+                {renderSquare(28)}
+                {renderSquare(29)}
+            </div>*/}
+        </div>);
 }
 
 function App() {
@@ -83,8 +94,11 @@ function App() {
     }
 
     let handleReset = () => {
+
+
         setValues(defaults);
         save();
+        window.location.reload();
     }
 
     let save = () => {
@@ -103,7 +117,7 @@ function App() {
             <button onClick={handleReset}>Reset</button>
 
             <div className="game-board">
-                <Board/>
+                <Board className='board' values={values} setValues={setValues}/>
             </div>
         </div>
     );
