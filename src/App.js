@@ -5,6 +5,7 @@ import {useState} from 'react';
 import {defaults} from './defaultValues';
 import {nextYear} from './game';
 import {cloneDeep} from 'lodash';
+import dragon from './dragonsmol.png'
 
 
 let Square = (props) => {
@@ -111,6 +112,7 @@ function App() {
 
     return (
         <div className="App">
+            <div><img src={dragon} alt={'dragon'} style={{maxWidth:'50%'}}/></div>
             <div>Population: {Math.round(values.population)}</div>
             <div>Gold: {Math.round(values.gold)}</div>
             <button onClick={handleNextYear}>Next year</button>
