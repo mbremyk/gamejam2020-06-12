@@ -1,3 +1,8 @@
+body{
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
 .App {
   text-align: center;
   color: chocolate;
@@ -47,6 +52,7 @@
 .square {
   background: #fff;
   border: 1px solid #999;
+  float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
