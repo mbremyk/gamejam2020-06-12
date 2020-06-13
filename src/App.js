@@ -4,10 +4,10 @@ import './App.css';
 import {useState} from 'react';
 import {defaults} from './defaultValues';
 import {nextYear, reset, save} from './game';
+import {cloneDeep} from 'lodash';
+import dragon from './dragonsmol.png';
 const electron = window.require('electron');
 const {ipcRenderer} = electron;
-import {cloneDeep} from 'lodash';
-import dragon from './dragonsmol.png'
 
 
 let Square = (props) => {
@@ -111,7 +111,7 @@ function App() {
     }
 
     useEffect(() => {
-        save(values);
+        save();
     }, [values]);
 
     ipcRenderer.on('reset', (e, args) => {
