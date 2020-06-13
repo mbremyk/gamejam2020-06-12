@@ -4,26 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-class Square extends React.Component {
-    render() {
-        return(
-            <button className="square">
-                {/*TODO*/}
-            </button>
-        );
-    }
-}
-
-class Board extends React.Component {
-    renderSquare(i){
-        return <Square/>;
-    }
-
-    render() {
-        const
-    }
-}
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
