@@ -57,8 +57,7 @@ const mainMenuTemplate = [
             {
                 label: 'Reset',
                 click() {
-                    console.log(1)
-                    mainWindow.webContents.send('reset', 1)
+                    mainWindow.webContents.send('reset')
                 }
             },
             {

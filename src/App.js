@@ -99,8 +99,6 @@ function App() {
     }
 
     let handleReset = () => {
-
-
         setValues(defaults);
         save();
         window.location.reload();
